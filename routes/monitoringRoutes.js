@@ -4,7 +4,7 @@ import { db } from '../firebase.js';
 const router = express.Router();
 
 router.get("/", (req, res) => {
-    res.send("Hello from Scanner Monitoring!");
+    res.send("Hello to Dashboard!");
 });
 
 router.get('/users', async (req, res) => {

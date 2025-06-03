@@ -9,6 +9,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.send("Hello from Scanner Monitoring!");
+});
 app.use('/api/v1/', monitoringRoutes);
 
 const PORT = process.env.PORT || 3000;
