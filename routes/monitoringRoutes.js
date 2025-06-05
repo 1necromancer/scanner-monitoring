@@ -1,5 +1,6 @@
 import express from 'express';
 import { db } from '../firebase.js';
+import { verifyApiKey } from "./authMiddleware.js";
 
 const router = express.Router();
 
@@ -9,7 +10,7 @@ router.get("/", (req, res) => {
 });
 
 // POST route to save monitoring data
-router.post("/upload", async (req, res) => {
+router.post("/upload", verifyApiKey, async (req, res) => {
     const payload = req.body;
 
     if (!Array.isArray(payload)) {
@@ -33,7 +34,7 @@ router.post("/upload", async (req, res) => {
     }
 });
 
-router.get("/data", async (req, res) => {
+router.get("/data", verifyApiKey, async (req, res) => {
     try {
         const snapshot = await db.collection("test").get();
 
