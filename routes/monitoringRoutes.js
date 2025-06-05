@@ -3,27 +3,33 @@ import { db } from '../firebase.js';
 
 const router = express.Router();
 
+// Test route
 router.get("/", (req, res) => {
     res.send("Hello to Dashboard!");
 });
 
-router.get('/users', async (req, res) => {
-    try {
-        const snapshot = await db.collection('users').get();
-        const users = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        res.json(users);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
+// POST route to save monitoring data
+router.post("/upload", async (req, res) => {
+    const payload = req.body;
 
-router.post('/users', async (req, res) => {
+    if (!Array.isArray(payload)) {
+        return res.status(400).json({ message: "Payload must be an array" });
+    }
+
     try {
-        const data = req.body;
-        const ref = await db.collection('users').add(data);
-        res.status(201).json({ id: ref.id });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+        const batch = db.batch();
+        const collectionRef = db.collection("test");
+
+        payload.forEach((item) => {
+            const docRef = collectionRef.doc(); // auto-generate ID
+            batch.set(docRef, item);
+        });
+
+        await batch.commit();
+        res.status(201).json({ message: "Data saved successfully" });
+    } catch (error) {
+        console.error("Error saving data:", error);
+        res.status(500).json({ message: "Internal server error", error: error.message });
     }
 });
 

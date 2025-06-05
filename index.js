@@ -12,7 +12,7 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Hello from Scanner Monitoring!");
 });
-app.use('/api/v1/', monitoringRoutes);
+app.use('/api/v1/monitoring/', monitoringRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
