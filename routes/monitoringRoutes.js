@@ -19,7 +19,7 @@ router.post("/upload", verifyApiKey, async (req, res) => {
 
     try {
         const batch = db.batch();
-        const collectionRef = db.collection("test");
+        const collectionRef = db.collection("monitoring");
 
         payload.forEach((item) => {
             const docRef = collectionRef.doc(); // auto-generate ID
@@ -36,7 +36,7 @@ router.post("/upload", verifyApiKey, async (req, res) => {
 
 router.get("/data", verifyApiKey, async (req, res) => {
     try {
-        const snapshot = await db.collection("test").get();
+        const snapshot = await db.collection("monitoring").get();
 
         const data = snapshot.docs.map(doc => ({
             id: doc.id,
